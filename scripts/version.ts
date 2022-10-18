@@ -51,6 +51,7 @@ export const getNewVersion = (version: string) => {
 
             if (process.env.CI) {
                 execSync(`git add ${pkg.path}/package.json`);
+                execSync(`git tag ${pkg.parsed.name}@${newVersion}`);
                 execSync(`git commit -am "[branch|${branch}] version of ${pkg.parsed.name} bumped to ${newVersion}"`);
             }
 

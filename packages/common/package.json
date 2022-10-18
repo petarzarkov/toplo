@@ -1,6 +1,6 @@
 {
   "name": "@toplo/common",
-  "version": "0.0.1",
+  "version": "0.9.9",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "module": "build/index.js",
