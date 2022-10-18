@@ -31,12 +31,13 @@ const genChangeLog = (pkg: ParsedPackage, data: components["schemas"]["commit"][
         step(`InitialChangelogLength: ${data.length}`, "green");
         const cleanChangelog = data.map(log => {
             const commitSha = log.sha;
-            const branch = execSync(`git name-rev ${commitSha}`)?.toString()?.split(" ")?.[1]?.split("\n")[0] || "main";
+            const branch = execSync(`git name-rev ${commitSha}`)?.toString()?.split(" ")?.[1]?.split("\n")?.[0] || "main";
             const version = getCommitPkgV(commitSha, pkg.path) || pkg.parsed.version;
             if (!hasChangesInDir(commitSha, pkg.path)) {
                 step(`No file changes for ${pkg.parsed.name}, skipping`, "magenta");
                 return;
             }
+
             return {
                 version,
                 branch,
