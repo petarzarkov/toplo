@@ -34,3 +34,19 @@ export function publishPackage(
         cwd: pkdDir
     });
 }
+
+export const getCommitPkgV = (commit: string, path: string) => {
+    try {
+        const pkgBuff = execSync(`git show "${commit}:${path}package.json"`, { stdio: "pipe" });
+        return (JSON.parse(pkgBuff.toString()) as { version?: string })?.version || "unknown";
+    } catch (error) {
+        return;
+    }
+};
+
+export const getFilesInACommit = (commit: string) => {
+    const files = execSync(`git ls-tree --name-only -r ${commit}`, { stdio: "pipe" }).toString();
+    const parsed = JSON.stringify(files).replace(/"/g, "").replace(/\\n/g, ",").split(",").filter(Boolean);
+
+    return parsed;
+};
