@@ -1,6 +1,6 @@
 {
   "name": "@toplo/db",
-  "version": "0.9.9",
+  "version": "1.0.0",
   "main": "build/db/src/index.js",
   "types": "build/db/src/index.d.ts",
   "module": "build/db/src/index.js",
