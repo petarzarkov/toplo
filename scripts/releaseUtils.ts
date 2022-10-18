@@ -2,11 +2,12 @@ import fs from "fs";
 import globby from "globby";
 import colors from "picocolors";
 import { execSync } from "node:child_process";
+import type { Colors, Formatter } from "picocolors/types";
 
 export type ParsedPackage = { path: string; parsed: Record<string, unknown> & { name: string; version: string } };
 
-export function step(msg: string): void {
-    return console.log(colors.cyan(msg));
+export function step(msg: string, format: keyof Colors = "cyan"): void {
+    return console.log(colors[format] instanceof Function ? (colors[format] as Formatter)(msg) : msg);
 }
 
 export async function getPackages(ignoreRoot = true): Promise<ParsedPackage[]> {
@@ -49,4 +50,10 @@ export const getFilesInACommit = (commit: string) => {
     const parsed = JSON.stringify(files).replace(/"/g, "").replace(/\\n/g, ",").split(",").filter(Boolean);
 
     return parsed;
+};
+
+export const hasChangesInDir = (commit: string, dir: string) => {
+    const fileChanges = getFilesInACommit(commit);
+
+    return fileChanges.some(change => change.includes(dir));
 };
