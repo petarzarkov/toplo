@@ -1,6 +1,6 @@
 {
   "name": "@toplo/db",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "module": "./build/index.js",
@@ -48,7 +48,7 @@
     "sequelize": "6.25.0",
     "@toplo/common": "workspace:*",
     "@toplo/api": "workspace:*"
-  }, 
+  },
   "peerDependencies": {
     "@toplo/common": "^1.0.6",
     "@toplo/api": "^1.0.6"
