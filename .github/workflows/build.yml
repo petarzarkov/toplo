@@ -24,11 +24,11 @@ jobs:
       with:
         node-version: ${{ matrix.node_version }}
         cache: "pnpm"
-    - name: nstall
+    - name: Install
       run: pnpm install
-    - name: Lint
-      run: pnpm run lint
     - name: Build
       run: pnpm run build
+    - name: Lint
+      run: pnpm run lint
     - name: Test
       run: pnpm run test
