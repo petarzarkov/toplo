@@ -18,7 +18,7 @@ module.exports = {
         sourceType: 'module',
         project: ["./tsconfig.json"]
     },
-    ignorePatterns: ['**/*.js', '**/*.d.ts', 'node_modules', 'build', 'tests'],
+    ignorePatterns: ['**/*.js', '**/*.d.ts', 'node_modules', 'build', 'tests', '**/*.md', '**/*.json'],
     rules: {
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/indent": "warn",

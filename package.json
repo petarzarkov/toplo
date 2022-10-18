@@ -15,7 +15,7 @@
         "build": "pnpm -r --parallel --stream run clean && pnpm -r --parallel --stream run build",
         "test": "pnpm -r --parallel --stream run test",
         "watch": "pnpm -r run dev && WATCH=true pnpm -r --parallel --stream run dev",
-        "lint": "eslint -c .eslintrc.js --ext .ts,.tsx --max-warnings 0",
+        "lint": "eslint packages/**",
         "lint:fix": "pnpm run lint --fix",
         "prepare": "is-ci || echo is not ci"
     },

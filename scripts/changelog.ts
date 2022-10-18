@@ -48,6 +48,7 @@ const genChangeLog = async (pkg: ParsedPackage) => {
             throw new Error("Empty changelog");
         }
 
+        console.log("InitialChangelog", JSON.stringify(initialChangelog));
         const additionalChangelog = initialChangelog.map(log => {
             const branch = execSync(`git name-rev ${log.commit}`).toString().split(" ")[1].split("\n")[0] || "Deleted";
             const version = getCommitPkgV(log.commit, pkg.path) || pkg.parsed.version;
@@ -69,7 +70,7 @@ const genChangeLog = async (pkg: ParsedPackage) => {
             }
             return true;
         });
-
+        console.log("AdditionalChangelog", JSON.stringify(additionalChangelog));
         fs.writeFileSync(`${pkg.path}CHANGELOG.md`, `# ${pkg.parsed.name} changelog
 
 ${additionalChangelog.map(acLog => {
