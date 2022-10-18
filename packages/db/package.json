@@ -1,9 +1,9 @@
 {
   "name": "@toplo/db",
   "version": "1.0.0",
-  "main": "build/db/src/index.js",
-  "types": "build/db/src/index.d.ts",
-  "module": "build/db/src/index.js",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "module": "build/index.js",
   "description": "toplo db utils",
   "engines": {
     "node": ">=15.4.0"
@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com/petarzarkov/toplo.git"
   },
-  "homepage": "https://github.com/petarzarkov/toplo/packages/db/README.md",
+  "homepage": "https://github.com/petarzarkov/toplo/blob/main/packages/db/README.md",
   "author": {
     "name": "Petar Zarkov",
     "email": "pzarko1@gmail.com"
@@ -38,14 +38,10 @@
     "start": "node build/index.js",
     "test": "echo tests to be implemented"
   },
-  "peerDependencies": {
-    "@toplo/common": "*",
-    "@toplo/api": "*"
-  },
   "dependencies": {
     "sequelize": "6.25.0",
-    "@toplo/common": "workspace:*",
-    "@toplo/api": "workspace:*"
+    "@toplo/common": "1.0.0",
+    "@toplo/api": "1.0.0"
   },
   "devDependencies": {
     "@types/config": "workspace:*",
@@ -61,7 +57,6 @@
     "access": "public"
   },
   "files": [
-    "build/db/src",
-    "build/db/src/repos"
+    "build"
   ]
 }
