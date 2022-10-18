@@ -26,7 +26,7 @@ export class HotRequests {
         const event = eventName || url.substring(url.lastIndexOf("/"));
         const requestOptions: RequestInit = {
             headers: method === HttpMethods.GET ? { Accept: "application/json" } : { "Content-Type": "application/json" },
-            signal: controller.signal as AbortSignal as NodeFetchAbortSignalType,
+            signal: controller.signal as NodeFetchAbortSignalType,
             ...options,
             method
         };
