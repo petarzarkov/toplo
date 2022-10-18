@@ -11,7 +11,7 @@ const genChangeLog = async (pkg: ParsedPackage) => {
         const branch = execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
         const git = spawn("git", [
             "log",
-            "origin/main",
+            `origin/${branch}`,
             "--pretty=format:{\"commit\": \"%H\",\"authorName\": \"%an\",\"authorEmail\": \"%aE\",\"date\": \"%ad\",\"subject\": \"%s\",\"message\": \"%f\"}"
         ]);
 
