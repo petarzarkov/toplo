@@ -37,6 +37,7 @@
     "build": "tsc -p tsconfig.json --diagnostics",
     "build:watch": "npm run build:speed -- --watch",
     "start": "node build/index.js",
+    "dev": "ts-node ./src/index.ts",
     "test": "jest --forceExit --detectOpenHandles"
   },
   "dependencies": {

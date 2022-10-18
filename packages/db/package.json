@@ -42,6 +42,7 @@
     "build": "tsc -p tsconfig.json --diagnostics",
     "build:watch": "npm run build -- --watch",
     "start": "node build/index.js",
+    "dev": "ts-node ./src/index.ts",
     "test": "echo tests to be implemented"
   },
   "dependencies": {
