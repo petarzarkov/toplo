@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com/petarzarkov/toplo.git"
   },
-  "homepage": "https://github.com/petarzarkov/toplo/packages/common/README.md",
+  "homepage": "https://github.com/petarzarkov/toplo/blob/main/packages/common/README.md",
   "author": {
     "name": "Petar Zarkov",
     "email": "pzarko1@gmail.com"

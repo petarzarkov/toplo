@@ -23,15 +23,7 @@
         "baseUrl": ".",
         "pretty": true,
         "incremental": true,
-        "removeComments": false,
-        "paths": {
-            "@toplo/common": [
-                "./packages/common/src"
-            ],
-            "@toplo/api": [
-                "./packages/api/src"
-            ],
-        }
+        "removeComments": false
     },
     "include": ["**/*", ".eslintrc.js"],
 }
