@@ -16,7 +16,11 @@
     <a href="https://eslint.org/" title="ESLint"><img src="https://github.com/get-icon/geticon/raw/master/icons/eslint.svg" alt="ESLint" width="26px" height="26px"></a>
 </div>
 
-
+## Packages
+- [@hot/api](https://github.com/petarzarkov/toplo/blob/main/packages/api/)
+- [@hot/common](https://github.com/petarzarkov/toplo/blob/main/packages/common/)
+- [@hot/components](https://github.com/petarzarkov/toplo/blob/main/packages/components/)
+- [@hot/db](https://github.com/petarzarkov/toplo/blob/main/packages/db/)
 
 ## Development
 - `pnpm i -g pnpm`
