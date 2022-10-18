@@ -18,7 +18,13 @@ const genChangeLog = async (pkg: ParsedPackage) => {
             "."
         ];
 
+        console.log({ path: pkg.path });
         execSync(changelogArgs.join(" "), { cwd: pkg.path });
+        if (process.env.CI) {
+            execSync(`git add ${pkg.path}CHANGELOG.md`);
+            execSync(`git commit -am "generated changelog for ${pkg.parsed.name}"`);
+        }
+
     } catch (error) {
         console.log({ message: `Error on generating changelog for ${pkg.parsed.name}`, error });
     }

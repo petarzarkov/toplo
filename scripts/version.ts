@@ -1,5 +1,5 @@
 import { execSync } from "child_process";
-import { getPackages } from "./releaseUtils";
+import { getPackages, step } from "./releaseUtils";
 
 export const getNewVersion = (version: string) => {
     let [major, minor, patch] = version.split(".").map(v => parseInt(v));
@@ -33,7 +33,7 @@ export const getNewVersion = (version: string) => {
     const packages = await getPackages();
     for (const pkg of packages) {
         try {
-            console.log(`Starting versioning for ${pkg.parsed.name}...`);
+            step(`Starting versioning for ${pkg.parsed.name}...`);
             if (!pkg.parsed.version) {
                 throw new Error("Missing pkg version!");
             }
@@ -44,10 +44,8 @@ export const getNewVersion = (version: string) => {
             const newVersion = getNewVersion(pkg.parsed.version);
             console.log("New Version:", newVersion);
 
-            const npmVersioned = execSync(`npm --prefix ${pkg.path} version ${newVersion} --no-git-tag-version`).toString();
-            console.log({ npmVersioned });
+            execSync(`npm --prefix ${pkg.path} version ${newVersion} --no-git-tag-version`).toString();
             const branch = execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
-            console.log({ branch });
 
             if (process.env.CI) {
                 execSync(`git add ${pkg.path}/package.json`);
