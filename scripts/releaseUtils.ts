@@ -53,7 +53,11 @@ export const getFilesInACommit = (commit: string) => {
 };
 
 export const hasChangesInDir = (commit: string, dir: string) => {
-    const fileChanges = getFilesInACommit(commit);
+    try {
+        const fileChanges = getFilesInACommit(commit);
 
-    return fileChanges.some(change => change.includes(dir));
+        return fileChanges.some(change => change.includes(dir));
+    } catch (error) {
+        return true;
+    }
 };
