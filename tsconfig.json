@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "target": "ES2020",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "sourceMap": false,
+        "declaration": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "forceConsistentCasingInFileNames": true,
+        "strictNullChecks": true,
+        "alwaysStrict": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noUnusedParameters": true,
+        "noUnusedLocals": true,
+        "strictPropertyInitialization": false,
+        "moduleResolution": "node",
+        "watch": false,
+        "baseUrl": ".",
+        "pretty": true,
+        "incremental": true,
+        "removeComments": false,
+        "paths": {
+            "@toplo/common": [
+                "./packages/common/src"
+            ],
+            "@toplo/api": [
+                "./packages/api/src"
+            ],
+        }
+    },
+    "include": ["**/*", ".eslintrc.js"],
+}

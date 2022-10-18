@@ -1,0 +1,74 @@
+{
+  "name": "@toplo/api",
+  "version": "0.0.1",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "module": "build/index.js",
+  "description": "Various NodeJS API utils with TS support",
+  "engines": {
+    "node": ">=15.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/petarzarkov/toplo.git"
+  },
+  "homepage": "https://github.com/petarzarkov/toplo/packages/api/README.md",
+  "author": {
+    "name": "Petar Zarkov",
+    "email": "pzarko1@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "ts",
+    "@toplo",
+    "@toplo/api",
+    "utils",
+    "url",
+    "object",
+    "http"
+  ],
+  "bugs": {
+    "url": "https://github.com/petarzarkov/toplo/issues"
+  },
+  "scripts": {
+    "clean": "rimraf build",
+    "prebuild": "npm run clean",
+    "build": "tsc -p tsconfig.json --diagnostics",
+    "build:watch": "npm run build:speed -- --watch",
+    "start": "node build/index.js",
+    "test": "jest --forceExit --detectOpenHandles"
+  },
+  "dependencies": {
+    "node-fetch": "2.6.7"
+  },
+  "peerDependencies": {
+    "config": ">=3.3.6",
+    "minimist": ">=1.2.6"
+  },
+  "peerDependenciesMeta": {
+    "config": {
+      "optional": true
+    },
+    "minimist": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/config": "workspace:*",
+    "@types/jest": "workspace:*",
+    "@types/node": "workspace:*",
+    "@types/node-fetch": "workspace:*",
+    "jest": "workspace:*",
+    "rimraf": "workspace:*",
+    "ts-jest": "workspace:*",
+    "ts-node": "workspace:*",
+    "typescript": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "build"
+  ]
+}

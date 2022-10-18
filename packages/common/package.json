@@ -1,0 +1,54 @@
+{
+  "name": "@toplo/common",
+  "version": "0.0.1",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "module": "build/index.js",
+  "description": "common toplo stuff",
+  "engines": {
+    "node": ">=15.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/petarzarkov/toplo.git"
+  },
+  "homepage": "https://github.com/petarzarkov/toplo/packages/common/README.md",
+  "author": {
+    "name": "Petar Zarkov",
+    "email": "pzarko1@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "ts",
+    "@toplo",
+    "@toplo/common"
+  ],
+  "bugs": {
+    "url": "https://github.com/petarzarkov/toplo/issues"
+  },
+  "scripts": {
+    "clean": "rimraf build",
+    "prebuild": "npm run clean",
+    "build": "tsc -p tsconfig.json --diagnostics",
+    "build:watch": "npm run build:speed -- --watch",
+    "start": "node build/index.js",
+    "test": "echo tests to be implemented"
+  },
+  "devDependencies": {
+    "@types/config": "workspace:*",
+    "@types/jest": "workspace:*",
+    "@types/node": "workspace:*",
+    "jest": "workspace:*",
+    "rimraf": "workspace:*",
+    "ts-jest": "workspace:*",
+    "ts-node": "workspace:*",
+    "typescript": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "build"
+  ]
+}
