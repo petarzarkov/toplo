@@ -17,6 +17,8 @@ importers:
 
   .:
     specifiers:
+      '@toplo/api': workspace:*
+      '@toplo/common': workspace:*
       '@types/config': 3.3.0
       '@types/jest': 29.1.2
       '@types/node': 18.11.0
@@ -34,6 +36,8 @@ importers:
       ts-node: 10.9.1
       typescript: 4.8.4
     devDependencies:
+      '@toplo/api': link:packages/api
+      '@toplo/common': link:packages/common
       '@types/config': 3.3.0
       '@types/jest': 29.1.2
       '@types/node': 18.11.0
@@ -118,8 +122,8 @@ importers:
 
   packages/db:
     specifiers:
-      '@toplo/api': 1.0.0
-      '@toplo/common': 1.0.0
+      '@toplo/api': workspace:*
+      '@toplo/common': workspace:*
       '@types/config': 3.3.0
       '@types/jest': 29.1.2
       '@types/node': 18.11.0
@@ -130,8 +134,8 @@ importers:
       ts-node: 10.9.1
       typescript: 4.8.4
     dependencies:
-      '@toplo/api': 1.0.0
-      '@toplo/common': 1.0.0
+      '@toplo/api': link:../api
+      '@toplo/common': link:../common
       sequelize: 6.25.0
     devDependencies:
       '@types/config': 3.3.0
@@ -838,28 +842,6 @@ packages:
     dependencies:
       '@sinonjs/commons': 1.8.3
     dev: true
-
-  /@toplo/api/1.0.0:
-    resolution: {integrity: sha512-gdXEGQizF91O0yMHRETv/KJuIy9l3kZYwXHoCAzH6R6yAPm43XhALFbVGYJuxEmMHM38G24SXmrbaab+ZPrB4A==}
-    engines: {node: '>=15.4.0'}
-    peerDependencies:
-      config: '>=3.3.6'
-      minimist: '>=1.2.6'
-    peerDependenciesMeta:
-      config:
-        optional: true
-      minimist:
-        optional: true
-    dependencies:
-      node-fetch: 2.6.7
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
-  /@toplo/common/1.0.0:
-    resolution: {integrity: sha512-ZPRgUuqoOxIWANzJEJELHGKjOqbAg/GbfffnuzYVilsSsYJHao5zMTaqR1l+YmVigbG60Jxj2aqFIjJRg7j5Kg==}
-    engines: {node: '>=15.4.0'}
-    dev: false
 
   /@tsconfig/node10/1.0.9:
     resolution: {integrity: sha512-jNsYVVxU8v5g43Erja32laIDHXeoNvFEpX33OK4d6hljo3jDhCBDhx5dhCCTMWUojscpAagGiRkBKxpdl9fxqA==}

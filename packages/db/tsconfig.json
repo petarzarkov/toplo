@@ -2,6 +2,10 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "outDir": "./build",
+        "paths": {
+            "@toplo/common": ["../common/src"],
+            "@toplo/api": ["../api/src"],
+          }
     },
     "include": [
         "src"

@@ -22,7 +22,7 @@
         "watch": false,
         "baseUrl": ".",
         "pretty": true,
-        "incremental": true,
+        "incremental": false,
         "removeComments": false
     },
     "include": ["**/*", ".eslintrc.js"],

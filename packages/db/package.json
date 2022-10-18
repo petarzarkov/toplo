@@ -1,9 +1,15 @@
 {
   "name": "@toplo/db",
   "version": "1.0.6",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
-  "module": "build/index.js",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "module": "./build/index.js",
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "import": "./build/index.js"
+    }
+  },
   "description": "toplo db utils",
   "engines": {
     "node": ">=15.4.0"
@@ -33,15 +39,19 @@
   "scripts": {
     "clean": "rimraf build",
     "prebuild": "npm run clean",
-    "build": "tsc -p tsconfig.json --diagnostics",
+    "build": "sleep 5 && tsc -p tsconfig.json --diagnostics",
     "build:watch": "npm run build -- --watch",
     "start": "node build/index.js",
     "test": "echo tests to be implemented"
   },
   "dependencies": {
     "sequelize": "6.25.0",
-    "@toplo/common": "1.0.0",
-    "@toplo/api": "1.0.0"
+    "@toplo/common": "workspace:*",
+    "@toplo/api": "workspace:*"
+  }, 
+  "peerDependencies": {
+    "@toplo/common": "^1.0.6",
+    "@toplo/api": "^1.0.6"
   },
   "devDependencies": {
     "@types/config": "workspace:*",
