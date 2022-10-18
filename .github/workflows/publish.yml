@@ -35,6 +35,8 @@ jobs:
           pnpm i
           pnpm run build
       - name: Versioning
+        env:
+          GH_API_TOKEN: ${{ secrets.GH_API_TOKEN }}
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"

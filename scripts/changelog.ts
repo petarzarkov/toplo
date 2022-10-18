@@ -1,7 +1,17 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import fs from "fs";
-import { execSync, spawn } from "node:child_process";
+import { execSync } from "node:child_process";
 import { getCommitPkgV, getPackages, hasChangesInDir, ParsedPackage, step } from "./releaseUtils";
+import { Octokit } from "@octokit/core";
+import type { components } from "@octokit/openapi-types/types";
+
+if (process.env.CI && !process.env.GH_API_TOKEN) {
+    throw new Error("process.env.GH_API_TOKEN missing!");
+}
+
+const octokit = new Octokit({
+    auth: process.env.GH_API_TOKEN
+});
 
 const writeLog = (name: string, path: string, logItems: Record<string, string>[]) => {
     fs.writeFileSync(
@@ -13,63 +23,29 @@ ${Object.keys(ac).map(k => (`* ${[k]}: ${ac[k]}\n`)).toString().replace(/,/g, ""
     );
 };
 
-const genChangeLog = async (pkg: ParsedPackage) => {
+const genChangeLog = (pkg: ParsedPackage, data: components["schemas"]["commit"][]) => {
     try {
         step(`Starting generation of changelog for ${pkg.parsed.name}`);
-
         const branch = execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
-        const git = spawn("git", [
-            "log",
-            "--pretty=format:{\"commit\": \"%H\",\"authorName\": \"%an\",\"authorEmail\": \"%aE\",\"date\": \"%ad\",\"subject\": \"%s\",\"message\": \"%f\"}"
-        ]);
 
-        const initialChangelog: string | Record<string, string>[] = await new Promise((resolve, reject) => {
-            let buf = Buffer.alloc(0);
-
-            git.stdout.on("data", (data) => {
-                buf = Buffer.concat([buf, data]);
-            });
-            git.stderr.on("data", (data: Buffer) => {
-                reject(data.toString());
-            });
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            git.on("close", (code, signal) => {
-                const closeBuf = buf.toString();
-                step(`Changelog close event, code: ${code}, signal: ${signal}`, "underline");
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                resolve(closeBuf?.split("\n").map(e => {
-                    try {
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                        return JSON.parse(e);
-                    } catch (error) {
-                        return e;
-                    }
-                }));
-            });
-        });
-
-        if (!Array.isArray(initialChangelog)) {
-            throw new Error(`Error generating changelog ${initialChangelog} for ${pkg.parsed.name}`);
-        }
-
-        if (!initialChangelog.length) {
-            throw new Error("Empty changelog");
-        }
-
-        step(`InitialChangelogLength: ${initialChangelog.length}`, "green");
-        const additionalChangelog = initialChangelog.map(log => {
-            const branch = execSync(`git name-rev ${log.commit}`).toString().split(" ")[1].split("\n")[0] || "Deleted";
-            const version = getCommitPkgV(log.commit, pkg.path) || pkg.parsed.version;
-            if (!hasChangesInDir(log.commit, pkg.path)) {
+        step(`InitialChangelogLength: ${data.length}`, "green");
+        const cleanChangelog = data.map(log => {
+            const commitSha = log.sha;
+            const branch = execSync(`git name-rev ${commitSha}`).toString().split(" ")[1].split("\n")[0] || "Deleted";
+            const version = getCommitPkgV(commitSha, pkg.path) || pkg.parsed.version;
+            if (!hasChangesInDir(commitSha, pkg.path)) {
                 step(`No file changes for ${pkg.parsed.name}, skipping`, "magenta");
                 return;
             }
             return {
                 version,
                 branch,
-                ...log,
-                subject: `${version} ${log.subject}`,
-                commit: `[${log.commit}](https://github.com/petarzarkov/toplo/commit/${log.commit})`
+                subject: `${version} ${log.commit.message}`,
+                message: log.commit.message,
+                author: log.commit.author?.name,
+                email: log.commit.author?.email,
+                date: log.commit.author?.date,
+                commit: `[${commitSha}](${log.html_url})`
             } as Record<string, string>;
         }).filter(l => {
             if (!l) return false;
@@ -79,8 +55,8 @@ const genChangeLog = async (pkg: ParsedPackage) => {
             return true;
         }) as Record<string, string>[];
 
-        step(`AdditionalChangelogLength: ${additionalChangelog.length}`, "green");
-        writeLog(pkg.parsed.name, pkg.path, additionalChangelog);
+        step(`cleanChangelogLength: ${cleanChangelog.length}`, "green");
+        writeLog(pkg.parsed.name, pkg.path, cleanChangelog);
 
         if (process.env.CI) {
             execSync(`git add ${pkg.path}CHANGELOG.md`);
@@ -94,8 +70,20 @@ const genChangeLog = async (pkg: ParsedPackage) => {
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 (async () => {
     const packages = await getPackages(true);
+    const commitRes = await octokit.request("GET /repos/{owner}/{repo}/commits", {
+        owner: "petarzarkov",
+        repo: "toplo",
+        per_page: 100,
+    });
+
+    if (commitRes.status !== 200 || !commitRes.data.length) {
+        step("Bad response from github api", "red");
+        step(JSON.stringify(commitRes), "bgYellow");
+        return;
+    }
+
     for (const pkg of packages) {
-        await genChangeLog(pkg);
+        genChangeLog(pkg, commitRes.data);
     }
 
 })();
