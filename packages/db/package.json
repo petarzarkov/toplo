@@ -39,7 +39,7 @@
   "scripts": {
     "clean": "rimraf build",
     "prebuild": "npm run clean",
-    "build": "sleep 5 && tsc -p tsconfig.json --diagnostics",
+    "build": "tsc -p tsconfig.json --diagnostics",
     "build:watch": "npm run build -- --watch",
     "start": "node build/index.js",
     "test": "echo tests to be implemented"
