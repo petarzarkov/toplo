@@ -1,8 +1,17 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/indent */
 import fs from "fs";
 import { execSync, spawn } from "node:child_process";
 import { getCommitPkgV, getPackages, hasChangesInDir, ParsedPackage, step } from "./releaseUtils";
+
+const writeLog = (name: string, path: string, logItems: Record<string, string>[]) => {
+    fs.writeFileSync(
+        `${path}CHANGELOG.md`, `# ${name} changelog
+    ${logItems.map(ac => {
+        return `\n## ${ac.subject} (${ac.date})
+${Object.keys(ac).map(k => (`* ${[k]}: ${ac[k]}\n`)).toString().replace(/,/g, "")}`;
+    }).toString().replace(/,/g, "")}`
+    );
+};
 
 const genChangeLog = async (pkg: ParsedPackage) => {
     try {
@@ -11,7 +20,6 @@ const genChangeLog = async (pkg: ParsedPackage) => {
         const branch = execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
         const git = spawn("git", [
             "log",
-            `origin/${branch}`,
             "--pretty=format:{\"commit\": \"%H\",\"authorName\": \"%an\",\"authorEmail\": \"%aE\",\"date\": \"%ad\",\"subject\": \"%s\",\"message\": \"%f\"}"
         ]);
 
@@ -27,7 +35,7 @@ const genChangeLog = async (pkg: ParsedPackage) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             git.on("close", (code, signal) => {
                 const closeBuf = buf.toString();
-                step(`Changelog close event, code: ${code}, signal: ${signal}`);
+                step(`Changelog close event, code: ${code}, signal: ${signal}`, "underline");
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 resolve(closeBuf?.split("\n").map(e => {
                     try {
@@ -48,7 +56,7 @@ const genChangeLog = async (pkg: ParsedPackage) => {
             throw new Error("Empty changelog");
         }
 
-        console.log("InitialChangelog", JSON.stringify(initialChangelog));
+        step(`InitialChangelogLength: ${initialChangelog.length}`, "green");
         const additionalChangelog = initialChangelog.map(log => {
             const branch = execSync(`git name-rev ${log.commit}`).toString().split(" ")[1].split("\n")[0] || "Deleted";
             const version = getCommitPkgV(log.commit, pkg.path) || pkg.parsed.version;
@@ -69,27 +77,15 @@ const genChangeLog = async (pkg: ParsedPackage) => {
                 return false;
             }
             return true;
-        });
-        console.log("AdditionalChangelog", JSON.stringify(additionalChangelog));
-        fs.writeFileSync(`${pkg.path}CHANGELOG.md`, `# ${pkg.parsed.name} changelog
+        }) as Record<string, string>[];
 
-${additionalChangelog.map(acLog => {
-    const ac = acLog as Record<string, string>;
-    return `
-## ${ac.subject} (${ac.date})
+        step(`AdditionalChangelogLength: ${additionalChangelog.length}`, "green");
+        writeLog(pkg.parsed.name, pkg.path, additionalChangelog);
 
-${Object.keys(ac).map(k => (`* ${[k]}: ${ac[k]}\n`)).toString().replace(/,/g, "")}
-    `;
-// eslint-disable-next-line no-regex-spaces
-}).toString().replace(/    ,/g, "")}
-`
-    );
-
-    if (process.env.CI) {
-        execSync(`git add ${pkg.path}CHANGELOG.md`);
-        execSync(`git commit -m "[branch|${branch}|${pkg.parsed.name}] changelog updated"`);
-    }
-    console.log(additionalChangelog);
+        if (process.env.CI) {
+            execSync(`git add ${pkg.path}CHANGELOG.md`);
+            execSync(`git commit -m "[branch|${branch}|${pkg.parsed.name}] changelog updated"`);
+        }
     } catch (error) {
         console.log({ message: `Error on generating changelog for ${pkg.parsed.name}`, error });
     }
@@ -99,7 +95,7 @@ ${Object.keys(ac).map(k => (`* ${[k]}: ${ac[k]}\n`)).toString().replace(/,/g, ""
 (async () => {
     const packages = await getPackages(true);
     for (const pkg of packages) {
-       await genChangeLog(pkg);
+        await genChangeLog(pkg);
     }
 
 })();
