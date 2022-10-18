@@ -4,7 +4,6 @@
     <a href="https://github.com/petarzarkov/toplo/actions/"><img src="https://github.com/petarzarkov/toplo/actions/workflows/build.yml/badge.svg?branch=main" alt="Build status"></a>
 	<a href="https://packagephobia.now.sh/result?p=@toplo/api"><img src="https://badgen.net/packagephobia/install/@toplo/api" alt="Current version"></a>
 	<a href="https://www.npmjs.com/package/@toplo/api"><img src="https://img.shields.io/npm/v/@toplo/api" alt="Install size"></a>
-	<a href="https://github.com/petarzarkov/@toplo/api/blob/main/LICENSE"><img src="https://img.shields.io/github/license/petarzarkov/@toplo/api" alt="License"></a>
     <p style="color: gray;">Stack</p>
     <a href="https://www.javascript.com/"><img title="JavaScript" alt="JavaScript" width="26px" height="26px" src="https://github.com/get-icon/geticon/raw/master/icons/javascript.svg" /></a>
     <a href="https://www.typescriptlang.org/"><img title="Typescript" alt="Typescript" width="26px" height="26px" src="https://github.com/get-icon/geticon/raw/master/icons/typescript-icon.svg" /></a>
