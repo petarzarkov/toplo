@@ -2,11 +2,11 @@
 /* eslint-disable @typescript-eslint/indent */
 import fs from "fs";
 import { execSync, spawn } from "node:child_process";
-import { getCommitPkgV, getFilesInACommit, getPackages, ParsedPackage } from "./releaseUtils";
+import { getCommitPkgV, getPackages, hasChangesInDir, ParsedPackage, step } from "./releaseUtils";
 
 const genChangeLog = async (pkg: ParsedPackage) => {
     try {
-        console.log(`Starting generation of changelog for ${pkg.parsed.name}`);
+        step(`Starting generation of changelog for ${pkg.parsed.name}`);
 
         const branch = execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
         const git = spawn("git", [
@@ -25,9 +25,18 @@ const genChangeLog = async (pkg: ParsedPackage) => {
                 reject(data.toString());
             });
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            git.on("close", (_code) => {
+            git.on("close", (code, signal) => {
+                const closeBuf = buf.toString();
+                step(`Changelog close event, code: ${code}, signal: ${signal}`);
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                resolve(buf.toString().split("\n").map(e => JSON.parse(e)));
+                resolve(closeBuf?.split("\n").map(e => {
+                    try {
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+                        return JSON.parse(e);
+                    } catch (error) {
+                        return e;
+                    }
+                }));
             });
         });
 
@@ -35,11 +44,15 @@ const genChangeLog = async (pkg: ParsedPackage) => {
             throw new Error(`Error generating changelog ${initialChangelog} for ${pkg.parsed.name}`);
         }
 
+        if (!initialChangelog.length) {
+            throw new Error("Empty changelog");
+        }
+
         const additionalChangelog = initialChangelog.map(log => {
             const branch = execSync(`git name-rev ${log.commit}`).toString().split(" ")[1].split("\n")[0] || "Deleted";
             const version = getCommitPkgV(log.commit, pkg.path) || pkg.parsed.version;
-            const filechanges = getFilesInACommit(log.commit);
-            if (!filechanges.includes(pkg.path)) {
+            if (!hasChangesInDir(log.commit, pkg.path)) {
+                step(`No file changes for ${pkg.parsed.name}, skipping`, "magenta");
                 return;
             }
             return {
