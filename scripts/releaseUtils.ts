@@ -43,6 +43,7 @@ export const getCommitPkgV = (commit: string, path: string) => {
         console.log({ commit, path, version });
         return version || "unknown";
     } catch (error) {
+        console.log("getCommitPkgV error", { error });
         return;
     }
 };
