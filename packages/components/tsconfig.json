@@ -1,7 +1,12 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "outDir": "./build"
+        "outDir": "./build",
+        "jsx": "react-jsx",
+        "noUnusedParameters": false,
+        "noUnusedLocals": false,
+        "sourceMap": true,
+        "skipLibCheck": true
     },
     "include": [
         "src"

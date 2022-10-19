@@ -39,8 +39,11 @@ export function publishPackage(
 export const getCommitPkgV = (commit: string, path: string) => {
     try {
         const pkgBuff = execSync(`git show "${commit}:${path}package.json"`, { stdio: "pipe" });
-        return (JSON.parse(pkgBuff.toString()) as { version?: string })?.version || "unknown";
+        const version = (JSON.parse(pkgBuff.toString()) as { version?: string })?.version;
+        console.log({ commit, path, version });
+        return version || "unknown";
     } catch (error) {
+        console.log("getCommitPkgV error", { error });
         return;
     }
 };
