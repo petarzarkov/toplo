@@ -51,8 +51,8 @@
     "@toplo/api": "workspace:*"
   },
   "peerDependencies": {
-    "@toplo/common": "^1.0.6",
-    "@toplo/api": "^1.0.6"
+    "@toplo/common": "workspace:*",
+    "@toplo/api": "workspace:*"
   },
   "devDependencies": {
     "@types/config": "workspace:*",

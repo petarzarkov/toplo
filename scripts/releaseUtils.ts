@@ -26,7 +26,7 @@ export function publishPackage(
     pkdDir: string,
     tag?: string
 ) {
-    const publicArgs = ["npm", "publish", "--access", "public"];
+    const publicArgs = ["pnpm", "publish", "--access", "public"];
     if (tag) {
         publicArgs.push("--tag", tag);
     }
