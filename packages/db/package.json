@@ -6,6 +6,7 @@
   "module": "./build/index.js",
   "exports": {
     ".": {
+      "require": "./build/index.js",
       "types": "./build/index.d.ts",
       "import": "./build/index.js"
     }
