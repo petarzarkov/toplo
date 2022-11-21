@@ -12,6 +12,12 @@ export type ProviderBase = Expand<
     colors: Record<string, string>;
     isLoading: boolean;
     routes: Record<string, { name: string; icon: IconType }>;
+    footerInfo?: {
+        authorName?: string;
+        linkedInLink?: string;
+        gitHubLink?: string;
+        moreLinks?: JSX.Element[];
+    };
 } & ContextSettings
 >;
 

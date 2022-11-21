@@ -4,13 +4,18 @@ import { ProviderBase, ToploContext, ContextSettings } from "./ToploContext";
 import { themes, ColorTheme } from "./themes";
 import { ChakraProvider } from "@chakra-ui/react";
 
-export class ThemeProvider extends React.Component<{ children: React.ReactNode; routes: ProviderBase["routes"] }> {
+export class ToploProvider extends React.Component<{
+    children: React.ReactNode;
+    routes: ProviderBase["routes"];
+    footer?: ProviderBase["footerInfo"];
+}> {
     isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     state: ProviderBase = {
         theme: "gray",
         colors: themes.gray,
         isLoading: false,
-        routes: this.props.routes
+        routes: this.props.routes,
+        footerInfo: this.props.footer
     };
 
     componentDidMount() {
