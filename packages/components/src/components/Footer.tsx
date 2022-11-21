@@ -7,8 +7,11 @@ import {
     useColorModeValue,
 } from "@chakra-ui/react";
 import { Socials } from "../components";
+import { useToploProvider } from "../hooks";
 
 export const Footer = () => {
+    const { footerInfo } = useToploProvider();
+
     return (
         <Box
             style={{
@@ -27,11 +30,11 @@ export const Footer = () => {
                 spacing={4}
                 justify={{ base: "center", md: "space-between" }}
                 align={{ base: "center", md: "center" }}>
-                <Text>{`©️ Petar Zarkov ${new Date().getFullYear()}`}</Text>
+                <Text>{`©️ ${footerInfo?.authorName || "Petar Zarkov"} ${new Date().getFullYear()}`}</Text>
                 <Stack direction={"row"} spacing={6}>
-                    <Socials.SwaggerDocs linkTo="" />
-                    <Socials.LinkedIn linkTo="" />
-                    <Socials.GitHub linkTo="" />
+                    <Socials.LinkedIn linkTo={footerInfo?.linkedInLink || "https://www.linkedin.com/in/%E2%98%95-petar-zarkov-7989a670/"} />
+                    <Socials.GitHub linkTo={footerInfo?.gitHubLink || "https://github.com/petarzarkov/toplo"} />
+                    {footerInfo?.moreLinks}
                 </Stack>
             </Container>
         </Box>
