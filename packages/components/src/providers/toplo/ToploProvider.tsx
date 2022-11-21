@@ -4,7 +4,7 @@ import { ProviderBase, ToploContext, ContextSettings } from "./ToploContext";
 import { themes, ColorTheme } from "./themes";
 import { ChakraProvider } from "@chakra-ui/react";
 
-export class ToploProvider extends React.Component<{
+export class ThemeProvider extends React.Component<{
     children: React.ReactNode;
     routes: ProviderBase["routes"];
     footer?: ProviderBase["footerInfo"];
