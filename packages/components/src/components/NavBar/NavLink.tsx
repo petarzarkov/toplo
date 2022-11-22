@@ -6,7 +6,7 @@ import {
     Icon
 } from "@chakra-ui/react";
 import { Link as RLink, useMatch, useResolvedPath } from "react-router-dom";
-import { IconType } from "react-icons";
+import type { IconType } from "react-icons";
 
 export const NavLink: FC<{ children: ReactNode; icon: IconType; to?: string }> = ({ children, icon, to = "#" }) => {
     const resolved = useResolvedPath(to);

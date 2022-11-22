@@ -55,7 +55,6 @@
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.1.0",
-    "vite": "^3.1.3",
     "jest": "workspace:*",
     "rimraf": "workspace:*",
     "ts-jest": "workspace:*",
