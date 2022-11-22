@@ -1,5 +1,5 @@
 import React from "react";
-import { IconType } from "react-icons";
+import type { IconType } from "react-icons";
 import { Expand } from "../../contracts";
 import { ColorTheme } from "./themes";
 
