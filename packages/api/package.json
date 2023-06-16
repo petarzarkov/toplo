@@ -40,32 +40,16 @@
     "dev": "ts-node ./src/index.ts",
     "test": "jest --forceExit --detectOpenHandles"
   },
-  "dependencies": {
-    "node-fetch": "2.6.7"
-  },
+  "dependencies": {},
   "peerDependencies": {
-    "config": ">=3.3.6",
-    "minimist": ">=1.2.6"
+    "config": ">=3.3.6"
   },
   "peerDependenciesMeta": {
     "config": {
       "optional": true
-    },
-    "minimist": {
-      "optional": true
     }
   },
-  "devDependencies": {
-    "@types/config": "workspace:*",
-    "@types/jest": "workspace:*",
-    "@types/node": "workspace:*",
-    "@types/node-fetch": "workspace:*",
-    "jest": "workspace:*",
-    "rimraf": "workspace:*",
-    "ts-jest": "workspace:*",
-    "ts-node": "workspace:*",
-    "typescript": "workspace:*"
-  },
+  "devDependencies": {},
   "publishConfig": {
     "access": "public"
   },

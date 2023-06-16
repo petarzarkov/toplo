@@ -25,16 +25,16 @@ ${Object.keys(ac).map(k => (`* ${[k]}: ${ac[k]}\n`)).toString().replace(/,/g, ""
 
 const genChangeLog = (pkg: ParsedPackage, data: components["schemas"]["commit"][]) => {
     try {
-        step(`Starting generation of changelog for ${pkg.parsed.name}`);
+        step({ msg: `Starting generation of changelog for ${pkg.parsed.name}` });
         const branch = execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
 
-        step(`InitialChangelogLength: ${data.length}`, "green");
+        step({ msg: `InitialChangelogLength: ${data.length}`, format: "green" });
         const cleanChangelog = data.map(log => {
             const commitSha = log.sha;
             const branch = execSync(`git name-rev ${commitSha}`)?.toString()?.split(" ")?.[1]?.split("\n")?.[0] || "main";
             const version = getCommitPkgV(commitSha, pkg.path) || pkg.parsed.version;
             if (!hasChangesInDir(commitSha, pkg.path)) {
-                step(`No file changes for ${pkg.parsed.name}, skipping`, "magenta");
+                step({ msg: `No file changes for ${pkg.parsed.name}, skipping`, format: "magenta" });
                 return;
             }
 
@@ -56,15 +56,15 @@ const genChangeLog = (pkg: ParsedPackage, data: components["schemas"]["commit"][
             return true;
         }) as Record<string, string>[];
 
-        step(`cleanChangelogLength: ${cleanChangelog.length}`, "green");
+        step({ msg: `cleanChangelogLength: ${cleanChangelog.length}`, format: "green" });
         writeLog(pkg.parsed.name, pkg.path, cleanChangelog);
 
         if (process.env.CI) {
             execSync(`git add ${pkg.path}CHANGELOG.md`);
             execSync(`git commit -m "[branch|${branch}|${pkg.parsed.name}] changelog updated"`);
         }
-    } catch (error) {
-        console.log({ message: `Error on generating changelog for ${pkg.parsed.name}`, error });
+    } catch (err) {
+        step({ msg: `Error on generating changelog for ${pkg.parsed.name}`, err });
     }
 };
 
@@ -78,8 +78,8 @@ const genChangeLog = (pkg: ParsedPackage, data: components["schemas"]["commit"][
     });
 
     if (commitRes.status !== 200 || !commitRes.data.length) {
-        step("Bad response from github api", "red");
-        step(JSON.stringify(commitRes), "bgYellow");
+        step({ msg: "Bad response from github api", format: "red" });
+        step({ info: commitRes, format: "bgYellow" });
         return;
     }
 

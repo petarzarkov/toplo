@@ -1,21 +1,18 @@
-import { getPackages, publishPackage } from "./releaseUtils";
+import { getPackages, publishPackage, step } from "./releaseUtils";
 
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-(async () => {
-    const packages = await getPackages();
-    for (const pkg of packages) {
-        try {
-            console.log(`Starting publish of ${pkg.parsed.name}...`);
-            if (!pkg.parsed.version) {
-                throw new Error("Missing pkg version!");
-            }
-
-            publishPackage(pkg.path);
-            console.log(`Finished publishing of ${pkg.parsed.name}`);
-
-        } catch (error) {
-            console.log({ message: `Error on publishing ${pkg.parsed.name}`, error });
-            process.exit(1);
+const packages = await getPackages();
+for (const pkg of packages) {
+    try {
+        step({ msg: `Starting publish of ${pkg.parsed.name}...` });
+        if (!pkg.parsed.version) {
+            throw new Error("Missing pkg version!");
         }
+
+        publishPackage(pkg.path);
+        step({ msg: `Finished publishing of ${pkg.parsed.name}`} );
+
+    } catch (err) {
+        step({ msg: `Error on publishing ${pkg.parsed.name}`, err });
+        process.exit(1);
     }
-})();
+}

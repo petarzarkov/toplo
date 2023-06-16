@@ -14,11 +14,11 @@ module.exports = {
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
     parserOptions: {
-        ecmaVersion: 2020,
+        ecmaVersion: 2021,
         sourceType: 'module',
         project: ["./tsconfig.json"]
     },
-    ignorePatterns: ['**/*.js', '**/*.d.ts', 'node_modules', 'build', 'tests', '**/*.md', '**/*.json'],
+    ignorePatterns: ['**/*.js', '**/*.d.ts', 'node_modules', 'build', 'tests', '**/*.md', '**/*.json', '\..*'],
     rules: {
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/indent": "warn",

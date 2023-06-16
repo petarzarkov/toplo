@@ -37,14 +37,6 @@
     "test": "echo tests to be implemented"
   },
   "devDependencies": {
-    "@types/config": "workspace:*",
-    "@types/jest": "workspace:*",
-    "@types/node": "workspace:*",
-    "jest": "workspace:*",
-    "rimraf": "workspace:*",
-    "ts-jest": "workspace:*",
-    "ts-node": "workspace:*",
-    "typescript": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

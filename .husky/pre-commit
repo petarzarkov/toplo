@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# TODO: figure out why pnpm is not found
+# pnpm exec lint-staged --concurrent false

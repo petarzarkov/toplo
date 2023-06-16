@@ -1,5 +1,3 @@
-import fetch, { Response, RequestInit } from "node-fetch";
-import { AbortSignal as NodeFetchAbortSignalType } from "node-fetch/externals";
 import { HotWatch } from "../hotWatch";
 import { HttpMethods, HttpRequest, HttpResponse, ExpandRecursively } from "../../contracts";
 import { HotUrl, HotObj } from "../../utils";
@@ -26,7 +24,7 @@ export class HotRequests {
         const event = eventName || url.substring(url.lastIndexOf("/"));
         const requestOptions: RequestInit = {
             headers: method === HttpMethods.GET ? { Accept: "application/json" } : { "Content-Type": "application/json" },
-            signal: controller.signal as NodeFetchAbortSignalType,
+            signal: controller.signal,
             ...options,
             method
         };

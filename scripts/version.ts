@@ -33,7 +33,7 @@ export const getNewVersion = (version: string) => {
     const packages = await getPackages();
     for (const pkg of packages) {
         try {
-            step(`Starting versioning for ${pkg.parsed.name}...`);
+            step({ msg: `Starting versioning for ${pkg.parsed.name}...` });
             if (!pkg.parsed.version) {
                 throw new Error("Missing pkg version!");
             }
