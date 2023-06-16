@@ -1,8 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo $CI
-if [[ "$CI" ~= "true" ]]; then
+if [[ "$CI" == "true" ]]; then
     echo "In CI, not linting"
     exit 0
 fi
