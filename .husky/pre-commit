@@ -1,5 +1,10 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# TODO: figure out why pnpm is not found
+echo $CI
+if [[ "$CI" ~= "true" ]]; then
+    echo "In CI, not linting"
+    exit 0
+fi
+
 pnpm exec lint-staged --concurrent false
