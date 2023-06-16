@@ -1,6 +1,6 @@
 import { HotLogger, HotRequests } from "../../../../src";
 
-jest.mock("../../../../src/helpers/hotLogger/HotLogger.ts")
+jest.mock("../../../../src/helpers/hotLogger/HotLogger.ts");
 const localLogger = HotLogger.createLogger("test-requests");
 
 describe("HotRequests E2E Test Suite", () => {
@@ -11,15 +11,17 @@ describe("HotRequests E2E Test Suite", () => {
             options: {
                 eventName: "e2eTest",
                 logger: localLogger,
-                timeout: 5000
-            }
+                timeout: 5000,
+            },
         });
 
-        expect(result).toEqual(expect.objectContaining({
-            success: true,
-            status: 200,
-            elapsed: expect.any(Number),
-        }));
+        expect(result).toEqual(
+            expect.objectContaining({
+                success: true,
+                status: 200,
+                elapsed: expect.any(Number),
+            }),
+        );
     });
 
     it("Should time out", async () => {
@@ -31,16 +33,18 @@ describe("HotRequests E2E Test Suite", () => {
             url: "http://google.com/",
             options: {
                 logger: localLogger,
-                timeout: 1
-            }
+                timeout: 1,
+            },
         });
 
-        expect(result).toEqual(expect.objectContaining({
-            success: false,
-            status: 408,
-            error: "The user aborted a request.",
-            stack: expect.stringContaining("AbortError: The user aborted a request."),
-            elapsed: expect.any(Number)
-        }));
+        expect(result).toEqual(
+            expect.objectContaining({
+                success: false,
+                status: 408,
+                error: "The operation was aborted.",
+                stack: expect.stringContaining("AbortError: The operation was aborted."),
+                elapsed: expect.any(Number),
+            }),
+        );
     });
 });

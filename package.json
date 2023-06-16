@@ -30,8 +30,7 @@
         "postbuild": "pnpm -r --parallel --filter=./packages/db --stream run build",
         "test": "pnpm -r --parallel --stream run test",
         "watch": "pnpm -r run dev && WATCH=true pnpm -r --parallel --stream run dev",
-        "preprepare": "is-ci || echo is not ci",
-        "prepare": "husky install"
+        "prepare": "is-ci || echo is not ci && husky install"
     },
     "lint-staged": {
         "*": [
