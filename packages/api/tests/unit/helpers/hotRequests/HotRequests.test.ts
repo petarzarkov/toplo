@@ -1,20 +1,19 @@
 import { HotLogger, HotRequests } from "../../../../src";
-import fetch from "node-fetch";
 
 const fetchFixture = {
     ok: true,
     status: 200,
-    text: async () => JSON.stringify({
-        valid: "res"
-    })
+    text: async () =>
+        JSON.stringify({
+            valid: "res",
+        }),
 };
 
-jest.mock("node-fetch");
-jest.mock("../../../../src/helpers/hotLogger/HotLogger.ts")
+jest.mock("../../../../src/helpers/hotLogger/HotLogger.ts");
 
 describe("HotRequests Test Suite", () => {
     beforeEach(() => {
-        (fetch as unknown as jest.Mock).mockImplementation(() => fetchFixture);
+        global.fetch = jest.fn().mockImplementation(() => fetchFixture);
     });
 
     it("Should return successful response and log", async () => {
@@ -24,18 +23,20 @@ describe("HotRequests Test Suite", () => {
             method: "GET",
             url: "https://randomuser.me/api",
             options: {
-                logger: localLogger
-            }
+                logger: localLogger,
+            },
         });
 
-        expect(result).toEqual(expect.objectContaining({
-            success: true,
-            status: 200,
-            elapsed: expect.any(Number),
-            result: {
-                valid: "res"
-            }
-        }));
+        expect(result).toEqual(
+            expect.objectContaining({
+                success: true,
+                status: 200,
+                elapsed: expect.any(Number),
+                result: {
+                    valid: "res",
+                },
+            }),
+        );
     });
 
     it("Should return unsuccessful response and log", async () => {
@@ -46,20 +47,22 @@ describe("HotRequests Test Suite", () => {
         const result = await HotRequests.get({
             url: "https://randomuser.me/api",
             options: {
-                logger: localLogger
-            }
+                logger: localLogger,
+            },
         });
 
-        expect(result).toEqual(expect.objectContaining({
-            success: false,
-            status: 500,
-            error: "Request unsuccessful",
-            stack: expect.stringContaining("Error:"),
-            elapsed: expect.any(Number),
-            result: {
-                valid: "res"
-            }
-        }));
+        expect(result).toEqual(
+            expect.objectContaining({
+                success: false,
+                status: 500,
+                error: "Request unsuccessful",
+                stack: expect.stringContaining("Error:"),
+                elapsed: expect.any(Number),
+                result: {
+                    valid: "res",
+                },
+            }),
+        );
     });
 
     it("Should return unsuccessful response on caught error", async () => {
@@ -74,16 +77,18 @@ describe("HotRequests Test Suite", () => {
             url: "https://randomuser.me/api",
             options: {
                 logger: localLogger,
-                timeout: 1
-            }
+                timeout: 1,
+            },
         });
 
-        expect(result).toEqual(expect.objectContaining({
-            success: false,
-            status: 500,
-            error: "Some err",
-            stack: expect.stringContaining("Error: Some err"),
-            elapsed: expect.any(Number)
-        }));
+        expect(result).toEqual(
+            expect.objectContaining({
+                success: false,
+                status: 500,
+                error: "Some err",
+                stack: expect.stringContaining("Error: Some err"),
+                elapsed: expect.any(Number),
+            }),
+        );
     });
 });

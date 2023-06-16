@@ -1,4 +1,3 @@
-import { RequestInit } from "node-fetch";
 import { IHotLogger } from "../../helpers";
 
 export type ParamsType = Record<string, string | boolean | number | undefined>;

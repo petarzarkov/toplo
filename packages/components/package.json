@@ -48,18 +48,10 @@
     "react-router-dom": "^6.4.0"
   },
   "devDependencies": {
-    "@types/config": "workspace:*",
-    "@types/jest": "workspace:*",
-    "@types/node": "workspace:*",
     "@types/parse-json": "^4.0.0",
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
-    "@vitejs/plugin-react": "^2.1.0",
-    "jest": "workspace:*",
-    "rimraf": "workspace:*",
-    "ts-jest": "workspace:*",
-    "ts-node": "workspace:*",
-    "typescript": "workspace:*"
+    "@vitejs/plugin-react": "^2.1.0"
   },
   "publishConfig": {
     "access": "public"

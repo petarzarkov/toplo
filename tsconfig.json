@@ -19,11 +19,10 @@
         "noUnusedLocals": true,
         "strictPropertyInitialization": false,
         "moduleResolution": "node",
-        "watch": false,
         "baseUrl": ".",
         "pretty": true,
         "incremental": false,
         "removeComments": false
     },
-    "include": ["**/*", ".eslintrc.js"],
+    "include": ["**/*"]
 }

@@ -6,8 +6,21 @@ import type { Colors, Formatter } from "picocolors/types";
 
 export type ParsedPackage = { path: string; parsed: Record<string, unknown> & { name: string; version: string } };
 
-export function step(msg: string, format: keyof Colors = "cyan"): void {
-    return console.log(colors[format] instanceof Function ? (colors[format] as Formatter)(msg) : msg);
+export function step({
+    msg,
+    format = "cyan",
+    info,
+    err
+}: { msg?: string; format?: keyof Colors; info?: Record<string, unknown>; err?: Error | unknown }): void {
+    return console.log(colors[format] instanceof Function ?
+        (colors[format] as Formatter)(JSON.stringify({
+            msg,
+            info,
+            err
+        }))
+        :
+        msg
+    );
 }
 
 export async function getPackages(ignoreRoot = true): Promise<ParsedPackage[]> {
@@ -40,10 +53,10 @@ export const getCommitPkgV = (commit: string, path: string) => {
     try {
         const pkgBuff = execSync(`git show "${commit}:${path}package.json"`, { stdio: "pipe" });
         const version = (JSON.parse(pkgBuff.toString()) as { version?: string })?.version;
-        console.log({ commit, path, version });
+        step({ info: { commit, path, version } });
         return version || "unknown";
-    } catch (error) {
-        console.log("getCommitPkgV error", { error });
+    } catch (err) {
+        step({ msg: "getCommitPkgV error", err });
         return;
     }
 };

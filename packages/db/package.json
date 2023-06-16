@@ -55,16 +55,7 @@
     "@toplo/common": "workspace:*",
     "@toplo/api": "workspace:*"
   },
-  "devDependencies": {
-    "@types/config": "workspace:*",
-    "@types/jest": "workspace:*",
-    "@types/node": "workspace:*",
-    "jest": "workspace:*",
-    "rimraf": "workspace:*",
-    "ts-jest": "workspace:*",
-    "ts-node": "workspace:*",
-    "typescript": "workspace:*"
-  },
+  "devDependencies": {},
   "publishConfig": {
     "access": "public"
   },

@@ -1,5 +1,3 @@
-import fetch, { Response, RequestInit } from "node-fetch";
-import { AbortSignal as NodeFetchAbortSignalType } from "node-fetch/externals";
 import { HotWatch } from "../hotWatch";
 import { HttpMethods, HttpRequest, HttpResponse, ExpandRecursively } from "../../contracts";
 import { HotUrl, HotObj } from "../../utils";
@@ -20,15 +18,15 @@ export class HotRequests {
             base: baseUrl,
             path,
             pathParams,
-            queryParams
+            queryParams,
         });
 
         const event = eventName || url.substring(url.lastIndexOf("/"));
         const requestOptions: RequestInit = {
             headers: method === HttpMethods.GET ? { Accept: "application/json" } : { "Content-Type": "application/json" },
-            signal: controller.signal as NodeFetchAbortSignalType,
+            signal: controller.signal,
             ...options,
-            method
+            method,
         };
 
         if (payload) {
@@ -46,13 +44,21 @@ export class HotRequests {
         let rawResponse: Response | undefined;
         try {
             rawResponse = await fetch(url, requestOptions);
-            const result = await this.parseResponse(rawResponse) as ExpandRecursively<TResponse>;
+            const result = (await this.parseResponse(rawResponse)) as ExpandRecursively<TResponse>;
             if (!rawResponse.ok) {
                 const message = "Request unsuccessful";
                 if (logger) {
-                    logger.warn(message, HotObj.cleanUpNullablesDeep({
-                        requestId, method, event, url, duration: hw.getElapsedMs(), data: { request: payload, result, status: rawResponse.status }
-                    }));
+                    logger.warn(
+                        message,
+                        HotObj.cleanUpNullablesDeep({
+                            requestId,
+                            method,
+                            event,
+                            url,
+                            duration: hw.getElapsedMs(),
+                            data: { request: payload, result, status: rawResponse.status },
+                        }),
+                    );
                 }
                 return {
                     success: false,
@@ -60,53 +66,63 @@ export class HotRequests {
                     stack: new Error().stack,
                     status: rawResponse.status,
                     result,
-                    elapsed: hw.getElapsedMs()
+                    elapsed: hw.getElapsedMs(),
                 };
             }
 
             if (logger) {
-                logger.info("Request successful", HotObj.cleanUpNullablesDeep({
-                    requestId, method, event, url, duration: hw.getElapsedMs(), data: { request: payload, result, status: rawResponse.status }
-                }));
+                logger.info(
+                    "Request successful",
+                    HotObj.cleanUpNullablesDeep({
+                        requestId,
+                        method,
+                        event,
+                        url,
+                        duration: hw.getElapsedMs(),
+                        data: { request: payload, result, status: rawResponse.status },
+                    }),
+                );
             }
             return {
                 success: true,
                 status: rawResponse.status || 200,
                 result,
-                elapsed: hw.getElapsedMs()
+                elapsed: hw.getElapsedMs(),
             };
         } catch (err) {
-            const isAborted = (err as Error)?.message.includes("abort");
+            const isAborted = (err as Error)?.message?.toLowerCase().includes("abort");
             const message = isAborted ? "Request timed out" : "Request unsuccessful";
             if (logger) {
-                logger.error(message, HotObj.cleanUpNullablesDeep({
-                    requestId,
-                    method,
-                    event,
-                    err: <Error>err,
-                    url,
-                    duration: hw.getElapsedMs(),
-                    data: { request: payload, status: rawResponse?.status, rawResponse }
-                }) as ErrorParams);
+                logger.error(
+                    message,
+                    HotObj.cleanUpNullablesDeep({
+                        requestId,
+                        method,
+                        event,
+                        err: <Error>err,
+                        url,
+                        duration: hw.getElapsedMs(),
+                        data: { request: payload, status: rawResponse?.status, rawResponse },
+                    }) as ErrorParams,
+                );
             }
 
             return {
                 success: false,
                 error: (err as Error)?.message || message,
                 stack: (err as Error)?.stack || new Error().stack,
-                status: isAborted ? 408 : (rawResponse?.status || 500),
-                elapsed: hw.getElapsedMs()
+                status: isAborted ? 408 : rawResponse?.status || 500,
+                elapsed: hw.getElapsedMs(),
             };
         } finally {
             clearTimeout(timeoutFetch);
         }
-
     }
 
     public static parseResponse = async <Res>(response: Response) => {
         const parsed: { responseText: string | null; responseJson: Res | null } = {
             responseText: null,
-            responseJson: null
+            responseJson: null,
         };
         try {
             parsed.responseText = await response.text();
@@ -149,6 +165,4 @@ export class HotRequests {
     public static trace<TRequest extends Record<string | number, unknown> | unknown, TResponse>(req: HttpRequest<TRequest>) {
         return this.fetch<TRequest, TResponse>({ ...req, method: HttpMethods.TRACE });
     }
-
 }
-
