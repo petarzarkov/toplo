@@ -41,8 +41,8 @@ describe("HotRequests E2E Test Suite", () => {
             expect.objectContaining({
                 success: false,
                 status: 408,
-                error: "The operation was aborted.",
-                stack: expect.stringContaining("AbortError: The operation was aborted."),
+                error: expect.stringContaining("The operation was aborted"),
+                stack: expect.stringContaining("AbortError: The operation was aborted"),
                 elapsed: expect.any(Number),
             }),
         );
